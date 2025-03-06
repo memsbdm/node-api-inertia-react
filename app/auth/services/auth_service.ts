@@ -1,6 +1,7 @@
+import { inject } from '@adonisjs/core'
 import User from '#users/models/user'
 import { UserService } from '#users/services/user_service'
-import { inject } from '@adonisjs/core'
+import type { AccessToken } from '@adonisjs/auth/access_tokens'
 
 @inject()
 export class AuthService {
@@ -8,5 +9,9 @@ export class AuthService {
 
   attempt(email: string, password: string): Promise<User> {
     return this.userService.login(email, password)
+  }
+
+  generateAccessToken(user: User): Promise<AccessToken> {
+    return this.userService.generateAccessToken(user)
   }
 }

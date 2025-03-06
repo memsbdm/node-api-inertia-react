@@ -1,5 +1,6 @@
-import type { StoreUserDto } from '#users/dtos/store_user_dto'
 import User from '#users/models/user'
+import type { AccessToken } from '@adonisjs/auth/access_tokens'
+import type { StoreUserDto } from '#users/dtos/store_user_dto'
 
 export class UserRepository {
   store(user: StoreUserDto): Promise<User> {
@@ -8,5 +9,9 @@ export class UserRepository {
 
   attempt(email: string, password: string): Promise<User> {
     return User.verifyCredentials(email, password)
+  }
+
+  generateAccessToken(user: User): Promise<AccessToken> {
+    return User.accessTokens.create(user)
   }
 }

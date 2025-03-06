@@ -1,7 +1,7 @@
 import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
-
+import { errors as authErrors } from '@adonisjs/auth'
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -30,6 +30,15 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    const isApiRequest = ctx.request.header('accept') === 'application/json'
+
+    if (isApiRequest) {
+      if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
+        ctx.response.status(401).send({ errors: [{ message: error.message }] })
+        return
+      }
+    }
+
     return super.handle(error, ctx)
   }
 

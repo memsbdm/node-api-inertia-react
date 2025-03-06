@@ -12,6 +12,10 @@ import { middleware } from './kernel.js'
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 const LogoutController = () => import('#auth/controllers/logout_controller')
+
+/*
+ * Inertia Routes
+ */
 router.on('/').renderInertia('home').as('home')
 
 // Auth
@@ -35,3 +39,14 @@ router
   .renderInertia('me/profile')
   .middleware(middleware.auth())
   .as('me.profile.render')
+
+/*
+ * API Routes
+ */
+
+router
+  .group(() => {
+    router.post('/auth/login', [LoginController, 'apiExecute'])
+  })
+  .middleware(middleware.guest({ guards: ['api'] }))
+  .prefix('api/v1')

@@ -22,6 +22,9 @@ export default class GuestMiddleware {
   ) {
     for (let guard of options.guards || [ctx.auth.defaultGuard]) {
       if (await ctx.auth.use(guard).check()) {
+        if (guard === 'api') {
+          return ctx.response.unauthorized({ errors: [{ message: 'Unauthorized' }] })
+        }
         return ctx.response.redirect(this.redirectTo, true)
       }
     }

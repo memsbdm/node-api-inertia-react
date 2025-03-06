@@ -20,7 +20,14 @@ export default class AuthMiddleware {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    if (options.guards?.includes('api')) {
+      let authenticated = await ctx.auth.use('api').check()
+      if (!authenticated) {
+        return ctx.response.unauthorized({ errors: [{ message: 'Unauthorized' }] })
+      }
+    } else {
+      await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    }
     return next()
   }
 }

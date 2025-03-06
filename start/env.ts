@@ -46,4 +46,8 @@ export default await Env.create(new URL('../', import.meta.url), {
   AWS_ACCESS_KEY_ID: Env.schema.string(),
   AWS_SECRET_ACCESS_KEY: Env.schema.string(),
   AWS_REGION: Env.schema.string(),
+
+  REDIS_HOST: Env.schema.string({ format: 'host' }),
+  REDIS_PORT: Env.schema.number(),
+  REDIS_PASSWORD: Env.schema.string.optional()
 })

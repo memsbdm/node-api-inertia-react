@@ -6,8 +6,15 @@ import { FormError } from '~/components/form/form_error'
 import { tuyau } from '#inertia/core/providers/tuyau'
 
 export default function LoginPage() {
-  const { errors, post, processing, data, setData, reset } = useForm({ email: '', password: '' })
-
+  const { errors, post, processing, data, setData, reset } = useForm<{
+    email: string;
+    password: string;
+    isRememberMe: boolean;
+  }>({ 
+    email: '', 
+    password: '', 
+    isRememberMe: false 
+  })
   function submit(event: FormEvent) {
     event.preventDefault()
 
@@ -54,6 +61,16 @@ export default function LoginPage() {
             onChange={(e) => setData('password', e.target.value)}
           />
           {errors.password && <FormError label={errors.password} />}
+        </div>
+        <div className={'flex gap-3 mt-2'}>
+          <label htmlFor="isRememberMe">Remember me</label>
+          <input
+            id="isRememberMe"
+            name="isRememberMe"
+            type="checkbox"
+            checked={data.isRememberMe}
+            onChange={(e) => setData('isRememberMe', e.target.checked)}
+          />
         </div>
         <Submit label="Login" disabled={processing}></Submit>
       </form>

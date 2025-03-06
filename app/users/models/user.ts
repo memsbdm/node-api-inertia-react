@@ -6,6 +6,7 @@ import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { Opaque } from '@adonisjs/core/types/helpers'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
 import type { AccessToken } from '@adonisjs/auth/access_tokens'
+import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
   passwordColumnName: 'password',
@@ -44,4 +45,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
     type: 'auth_token',
     tokenSecretLength: 40,
   })
+
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
 }

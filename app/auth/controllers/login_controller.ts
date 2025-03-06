@@ -10,6 +10,7 @@ export default class LoginController {
     vine.object({
       email: vine.string().trim().toLowerCase().email(),
       password: vine.string(),
+      isRememberMe: vine.boolean().optional(),
     })
   )
 
@@ -20,9 +21,11 @@ export default class LoginController {
   }
 
   async execute({ request, auth, response }: HttpContext) {
-    const { email, password } = await request.validateUsing(LoginController.LoginValidator)
+    const { email, password, isRememberMe } = await request.validateUsing(
+      LoginController.LoginValidator
+    )
     const user = await this.authService.attempt(email, password)
-    await auth.use('web').login(user)
+    await auth.use('web').login(user, !!isRememberMe)
 
     return response.redirect().toPath(tuyau.$url('me.profile.render'))
   }

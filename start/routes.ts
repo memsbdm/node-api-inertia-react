@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
+import { throttle } from './limiter.js'
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 const LogoutController = () => import('#auth/controllers/logout_controller')
@@ -72,3 +73,4 @@ router
       .middleware(middleware.auth({ guards: ['api'] }))
   })
   .prefix('api/v1')
+  .use(throttle)

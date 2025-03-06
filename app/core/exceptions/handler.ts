@@ -2,6 +2,8 @@ import app from '@adonisjs/core/services/app'
 import { HttpContext, ExceptionHandler } from '@adonisjs/core/http'
 import type { StatusPageRange, StatusPageRenderer } from '@adonisjs/core/types/http'
 import { errors as authErrors } from '@adonisjs/auth'
+import { errors as limiterErrors } from '@adonisjs/limiter'
+
 export default class HttpExceptionHandler extends ExceptionHandler {
   /**
    * In debug mode, the exception handler will display verbose errors
@@ -35,6 +37,15 @@ export default class HttpExceptionHandler extends ExceptionHandler {
     if (isApiRequest) {
       if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
         ctx.response.status(401).send({ errors: [{ message: error.message }] })
+        return
+      }
+
+      if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS) {
+        const headers = error.getDefaultHeaders()
+        const timer = headers['Retry-After']
+        ctx.response
+          .status(429)
+          .send({ errors: [{ message: error.message, retryAfterInSeconds: timer }] })
         return
       }
     }

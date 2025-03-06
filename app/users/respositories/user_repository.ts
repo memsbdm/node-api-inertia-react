@@ -14,4 +14,8 @@ export class UserRepository {
   generateAccessToken(user: User): Promise<AccessToken> {
     return User.accessTokens.create(user)
   }
+
+  revokeAccessToken(user: User, tokenID: string | number | BigInt): Promise<number> {
+    return User.accessTokens.delete(user, tokenID)
+  }
 }

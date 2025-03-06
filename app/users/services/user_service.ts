@@ -19,4 +19,8 @@ export class UserService {
   generateAccessToken(user: User): Promise<AccessToken> {
     return this.repository.generateAccessToken(user)
   }
+
+  revokeAccessToken(user: User, tokenID: string | number | BigInt): Promise<number> {
+    return this.repository.revokeAccessToken(user, tokenID)
+  }
 }

@@ -16,6 +16,7 @@ const LogoutController = () => import('#auth/controllers/logout_controller')
 /*
  * Inertia Routes
  */
+
 router.on('/').renderInertia('home').as('home')
 
 // Auth
@@ -46,7 +47,13 @@ router
 
 router
   .group(() => {
-    router.post('/auth/login', [LoginController, 'apiExecute'])
+    // Auth
+    router
+      .post('/auth/login', [LoginController, 'apiExecute'])
+      .middleware(middleware.guest({ guards: ['api'] }))
+
+    router
+      .delete('/auth/logout', [LogoutController, 'apiExecute'])
+      .middleware(middleware.auth({ guards: ['api'] }))
   })
-  .middleware(middleware.guest({ guards: ['api'] }))
   .prefix('api/v1')

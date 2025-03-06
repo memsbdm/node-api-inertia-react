@@ -27,16 +27,16 @@ export default class LoginController {
     return response.redirect().toPath(tuyau.$url('me.profile.render'))
   }
 
-  async apiExecute({ request }: HttpContext) {
+  async apiExecute({ request, response }: HttpContext) {
     const { email, password } = await request.validateUsing(LoginController.LoginValidator)
     const user = await this.authService.attempt(email, password)
     const token = await this.authService.generateAccessToken(user)
-    return {
+    return response.status(200).json({
       accessToken: {
         type: 'bearer',
         value: token.value!.release(),
       },
       user,
-    }
+    })
   }
 }

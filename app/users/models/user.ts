@@ -5,7 +5,7 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { Opaque } from '@adonisjs/core/types/helpers'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
-
+import type { AccessToken } from '@adonisjs/auth/access_tokens'
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
   passwordColumnName: 'password',
@@ -34,6 +34,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   @column({ serializeAs: null })
   declare password: string
+
+  currentAccessToken?: AccessToken
 
   static accessTokens = DbAccessTokensProvider.forModel(User, {
     expiresIn: '30 days',

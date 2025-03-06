@@ -34,9 +34,25 @@ export default class RegisterController {
     })
 
     const user = await this.service.register(payload)
-
     await auth.use('web').login(user)
 
     return response.redirect().toPath(tuyau.$url('me.profile.render'))
+  }
+
+  async apiExecute({ request, response }: HttpContext) {
+    const payload = await request.validateUsing(RegisterController.StoreUserValidator, {
+      messagesProvider: new SimpleMessagesProvider({ confirmed: 'Passwords do not match.' }),
+    })
+
+    const user = await this.service.register(payload)
+    const token = await this.service.generateAccessToken(user)
+
+    return response.status(200).json({
+      accessToken: {
+        type: 'bearer',
+        value: token.value!.release(),
+      },
+      user,
+    })
   }
 }

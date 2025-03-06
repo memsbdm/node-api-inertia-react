@@ -49,11 +49,16 @@ router
   .group(() => {
     // Auth
     router
-      .post('/auth/login', [LoginController, 'apiExecute'])
+      .group(() => {
+        router.post('/auth/login', [LoginController, 'apiExecute'])
+        router.post('/auth/register', [RegisterController, 'apiExecute'])
+      })
       .middleware(middleware.guest({ guards: ['api'] }))
 
     router
-      .delete('/auth/logout', [LogoutController, 'apiExecute'])
+      .group(() => {
+        router.delete('/auth/logout', [LogoutController, 'apiExecute'])
+      })
       .middleware(middleware.auth({ guards: ['api'] }))
   })
   .prefix('api/v1')

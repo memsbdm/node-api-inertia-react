@@ -1,0 +1,14 @@
+services:
+  database:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=lucid
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+
+volumes:
+  psql-data:

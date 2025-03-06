@@ -12,6 +12,7 @@ import { middleware } from './kernel.js'
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 const LogoutController = () => import('#auth/controllers/logout_controller')
+const VerifyEmailController = () => import('#users/controllers/verify_email_controller')
 
 /*
  * Inertia Routes
@@ -40,6 +41,15 @@ router
   .renderInertia('me/profile')
   .middleware(middleware.auth())
   .as('me.profile.render')
+
+router
+  .get('/me/verify-email', [VerifyEmailController, 'render'])
+  .middleware(middleware.auth())
+  .as('me.verify-email.render')
+
+router
+  .get('/me/verify-email/:token', [VerifyEmailController, 'execute'])
+  .as('me.verify-email.execute')
 
 /*
  * API Routes

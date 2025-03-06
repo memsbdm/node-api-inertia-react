@@ -18,4 +18,9 @@ export class UserRepository {
   revokeAccessToken(user: User, tokenID: string | number | BigInt): Promise<number> {
     return User.accessTokens.delete(user, tokenID)
   }
+
+  async verifyEmail(user: User): Promise<void> {
+    user.isEmailVerified = true
+    await user.save()
+  }
 }

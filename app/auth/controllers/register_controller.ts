@@ -36,7 +36,7 @@ export default class RegisterController {
     const user = await this.service.register(payload)
     await auth.use('web').login(user)
 
-    return response.redirect().toPath(tuyau.$url('me.profile.render'))
+    return response.redirect().toPath(tuyau.$url('me.verify-email.render'))
   }
 
   async apiExecute({ request, response }: HttpContext) {

@@ -19,6 +19,7 @@
     "#users/*": "./app/users/*.js",
     "#providers/*": "./providers/*.js",
     "#database/*": "./database/*.js",
+    "#inertia/*": "./inertia/*.js",
     "#tests/*": "./tests/*.js",
     "#start/*": "./start/*.js",
     "#config/*": "./config/*.js"

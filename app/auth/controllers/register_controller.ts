@@ -8,8 +8,8 @@ import { tuyau } from '#inertia/core/providers/tuyau'
 export default class RegisterController {
   static StoreUserValidator = vine.compile(
     vine.object({
-      firstName: vine.string().trim().toLowerCase(),
-      lastName: vine.string().trim().toLowerCase(),
+      firstName: vine.string().trim().minLength(1).maxLength(50).toLowerCase(),
+      lastName: vine.string().trim().minLength(1).maxLength(50).toLowerCase(),
       email: vine
         .string()
         .email()

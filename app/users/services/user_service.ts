@@ -7,7 +7,11 @@ import { inject } from '@adonisjs/core'
 export class UserService {
   constructor(private repository: UserRepository) {}
 
-  async register(user: StoreUserDto): Promise<User> {
+  register(user: StoreUserDto): Promise<User> {
     return this.repository.store(user)
+  }
+
+  login(email: string, password: string): Promise<User> {
+    return this.repository.attempt(email, password)
   }
 }

@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import type { Authenticators } from '@adonisjs/auth/types'
+import { tuyau } from '#inertia/core/providers/tuyau'
 
 /**
  * Auth middleware is used authenticate HTTP requests and deny
@@ -10,7 +11,7 @@ export default class AuthMiddleware {
   /**
    * The URL to redirect to, when authentication fails
    */
-  redirectTo = '/auth/login'
+  redirectTo = tuyau.$url('auth.login.render')
 
   async handle(
     ctx: HttpContext,

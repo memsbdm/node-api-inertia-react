@@ -38,6 +38,7 @@ export default function RegisterPage() {
               name="firstName"
               type="text"
               value={data.firstName}
+              required
               onChange={(e) => setData('firstName', e.target.value)}
             />
             {errors.firstName && <FormError label={errors.firstName} />}
@@ -50,6 +51,7 @@ export default function RegisterPage() {
               name="lastName"
               type="text"
               value={data.lastName}
+              required
               onChange={(e) => setData('lastName', e.target.value)}
             />
             {errors.lastName && <FormError label={errors.lastName} />}
@@ -63,6 +65,7 @@ export default function RegisterPage() {
               name="email"
               type="email"
               value={data.email}
+              required
               onChange={(e) => setData('email', e.target.value)}
             />
             {errors.email && <FormError label={errors.email} />}
@@ -76,6 +79,7 @@ export default function RegisterPage() {
               name="password"
               type="password"
               value={data.password}
+              required
               onChange={(e) => setData('password', e.target.value)}
             />
             {errors.password && <FormError label={errors.password} />}
@@ -88,6 +92,7 @@ export default function RegisterPage() {
               name="passwordConfirmation"
               type="password"
               value={data.passwordConfirmation}
+              required
               onChange={(e) => setData('passwordConfirmation', e.target.value)}
             />
           </div>
@@ -96,7 +101,7 @@ export default function RegisterPage() {
         </form>
         <p>
           Already have an account?{' '}
-          <Link href={""} className={'text-blue-5'}>
+          <Link href={tuyau.$url('auth.login.render')} className={'text-blue-5'}>
             Login
           </Link>
         </p>

@@ -13,7 +13,7 @@ export default class LogoutController {
   }
 
   async apiExecute({ auth, response }: HttpContext) {
-    const user = await auth.authenticateUsing(['api'])
+    const user = auth.user!
     await this.authService.revokeAccessToken(user, user.currentAccessToken!.identifier)
     return response.status(200)
   }

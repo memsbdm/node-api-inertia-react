@@ -21,8 +21,8 @@ export default class AuthMiddleware {
     } = {}
   ) {
     if (options.guards?.includes('api')) {
-      let authenticated = await ctx.auth.use('api').check()
-      if (!authenticated) {
+      const user = await ctx.auth.authenticateUsing(['api'])
+      if (!user) {
         return ctx.response.unauthorized({ errors: [{ message: 'Unauthorized' }] })
       }
     } else {

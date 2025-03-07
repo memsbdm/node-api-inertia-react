@@ -67,20 +67,23 @@ router
     // Auth
     router
       .group(() => {
-        router.post('/auth/login', [LoginController, 'apiExecute'])
-        router.post('/auth/register', [RegisterController, 'apiExecute'])
+        router.post('/auth/login', [LoginController, 'apiExecute']).as('auth.login.apiExecute')
+        router
+          .post('/auth/register', [RegisterController, 'apiExecute'])
+          .as('auth.register.apiExecute')
       })
       .middleware(middleware.guest({ guards: ['api'] }))
 
     router
       .group(() => {
-        router.delete('/auth/logout', [LogoutController, 'apiExecute'])
+        router.delete('/auth/logout', [LogoutController, 'apiExecute']).as('auth.logout.apiExecute')
       })
       .middleware(middleware.auth({ guards: ['api'] }))
 
     // Users
     router
       .post('/me/verify-email/resend', [VerifyEmailController, 'apiResend'])
+      .as('me.verify-email.apiResend')
       .middleware(middleware.auth({ guards: ['api'] }))
       .use(verifyEmailLimiter)
   })

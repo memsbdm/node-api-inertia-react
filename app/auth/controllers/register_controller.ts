@@ -15,7 +15,11 @@ export default class RegisterController {
         .email()
         .toLowerCase()
         .unique(async (db, value) => {
-          const user = await db.from('users').where('email', value).first()
+          const user = await db
+            .from('users')
+            .where('email', value)
+            .andWhere('is_email_verified', true)
+            .first()
           return !user
         }),
       password: vine.string().minLength(8).confirmed({ confirmationField: 'passwordConfirmation' }),

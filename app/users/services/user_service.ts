@@ -19,17 +19,7 @@ export class UserService {
 
   async register(user: StoreUserDto): Promise<User> {
     const createdUser = await this.repository.store(user)
-    const token = await this.tokenService.generateTokenOfType(TokenType.VerifyEmail, createdUser)
-
-    await this.mailService.sendLater(
-      'mehmetbdm@outlook.fr',
-      'Welcome to our app',
-      'emails/verify_email',
-      {
-        user: createdUser,
-        url: buildVerifyEmailUrl(token),
-      }
-    )
+    await this.sendVerificationEmail(createdUser)
 
     return createdUser
   }
@@ -48,6 +38,15 @@ export class UserService {
 
   async verifyEmail(user: User): Promise<void> {
     return this.repository.verifyEmail(user)
+  }
+
+  async sendVerificationEmail(user: User): Promise<void> {
+    const token = await this.tokenService.generateTokenOfType(TokenType.VerifyEmail, user)
+
+    await this.mailService.sendLater(user.email, 'Welcome to our app', 'emails/verify_email', {
+      user,
+      url: buildVerifyEmailUrl(token),
+    })
   }
 }
 

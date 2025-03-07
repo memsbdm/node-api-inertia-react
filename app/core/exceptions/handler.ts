@@ -50,6 +50,18 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       }
     }
 
+    if (error instanceof authErrors.E_INVALID_CREDENTIALS) {
+      ctx.session.flashErrors({ code: 'E_INVALID_CREDENTIALS', message: error.message })
+      return ctx.response.redirect().back()
+    }
+
+    if (error instanceof limiterErrors.E_TOO_MANY_REQUESTS) {
+      const headers = error.getDefaultHeaders()
+      const timer = headers['Retry-After']
+      ctx.session.flashErrors({ code: 'E_TOO_MANY_REQUESTS', timer })
+      return ctx.response.redirect().back()
+    }
+
     return super.handle(error, ctx)
   }
 

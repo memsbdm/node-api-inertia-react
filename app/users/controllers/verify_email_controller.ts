@@ -27,4 +27,16 @@ export default class VerifyEmailController {
 
     return inertia.render('tokens/verify_email_token_validation', { valid: true })
   }
+
+  async resend({ auth, response }: HttpContext) {
+    const user = auth.user!
+
+    if (user.isEmailVerified) {
+      return response.redirect().back()
+    }
+
+    await this.userService.sendVerificationEmail(user)
+
+    return response.redirect().back()
+  }
 }

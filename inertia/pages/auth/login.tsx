@@ -6,14 +6,10 @@ import { FormError } from '~/components/form/form_error'
 import { tuyau } from '#inertia/core/providers/tuyau'
 
 export default function LoginPage() {
-  const { errors, post, processing, data, setData, reset } = useForm<{
-    email: string;
-    password: string;
-    isRememberMe: boolean;
-  }>({ 
-    email: '', 
-    password: '', 
-    isRememberMe: false 
+  const { errors, post, processing, data, setData, reset } = useForm({
+    email: '',
+    password: '',
+    isRememberMe: Boolean(false),
   })
   function submit(event: FormEvent) {
     event.preventDefault()
@@ -31,12 +27,11 @@ export default function LoginPage() {
 
   return (
     <AuthLayout title="Sign in to your account">
-      {'E_INVALID_CREDENTIALS' in errors && (
-        <FormError label={'No account found with provided credentials'} />
+      {'code' in errors && errors.code === 'E_INVALID_CREDENTIALS' && 'message' in errors && (
+        <FormError label={errors.message as string} />
       )}
 
-
-      <form action="" method="POST" onSubmit={submit} className="w-80">
+      <form onSubmit={submit} className="w-80">
         <div className={'flex flex-col'}>
           <label htmlFor="email">Email</label>
           <input

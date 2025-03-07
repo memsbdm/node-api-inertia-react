@@ -9,7 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-import { throttle } from './limiter.js'
+import { throttle, verifyEmailLimiter } from './limiter.js'
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 const LogoutController = () => import('#auth/controllers/logout_controller')
@@ -51,6 +51,12 @@ router
 router
   .get('/me/verify-email/:token', [VerifyEmailController, 'execute'])
   .as('me.verify-email.execute')
+
+router
+  .post('/me/verify-email/resend', [VerifyEmailController, 'resend'])
+  .middleware(middleware.auth())
+  .use(verifyEmailLimiter)
+  .as('me.verify-email.resend')
 
 /*
  * API Routes

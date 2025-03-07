@@ -7,8 +7,8 @@ import { defineConfig } from '@adonisjs/cors'
  * https://docs.adonisjs.com/guides/security/cors
  */
 const corsConfig = defineConfig({
-  enabled: true,
-  origin: ['https://mon-app-49.13.131.206.sslip.io', 'http://localhost:3333'],
+  enabled: false,
+  origin: '*',
   methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
   headers: true,
   exposeHeaders: [],

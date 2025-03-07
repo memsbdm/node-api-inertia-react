@@ -39,4 +39,16 @@ export default class VerifyEmailController {
 
     return response.redirect().back()
   }
+
+  async apiResend({ auth, response }: HttpContext) {
+    const user = auth.user!
+
+    if (user.isEmailVerified) {
+      return response.status(403).json({ errors: [{ message: 'Email already verified' }] })
+    }
+
+    await this.userService.sendVerificationEmail(user)
+
+    return response.status(200).json({ message: 'Email sent' })
+  }
 }

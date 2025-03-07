@@ -77,6 +77,12 @@ router
         router.delete('/auth/logout', [LogoutController, 'apiExecute'])
       })
       .middleware(middleware.auth({ guards: ['api'] }))
+
+    // Users
+    router
+      .post('/me/verify-email/resend', [VerifyEmailController, 'apiResend'])
+      .middleware(middleware.auth({ guards: ['api'] }))
+      .use(verifyEmailLimiter)
   })
   .prefix('api/v1')
   .use(throttle)

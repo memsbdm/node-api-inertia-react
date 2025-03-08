@@ -1,5 +1,4 @@
 import { createTuyau } from '@tuyau/client'
 import { api } from '../../../.adonisjs/api.js'
-import env from '#start/env'
 
-export const tuyau = createTuyau({ baseUrl: env.get('DOMAIN'), api })
+export const tuyau = createTuyau({ baseUrl: 'https://mon-app-49.13.131.206.sslip.io', api })

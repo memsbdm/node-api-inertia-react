@@ -27,6 +27,10 @@ type AuthLogoutDelete = {
   request: unknown
   response: MakeTuyauResponse<import('../app/auth/controllers/logout_controller.ts').default['execute'], false>
 }
+type MeGetHead = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/users/controllers/me_controller.ts').default['render'], false>
+}
 type MeVerifyemailGetHead = {
   request: unknown
   response: MakeTuyauResponse<import('../app/users/controllers/verify_email_controller.ts').default['render'], false>
@@ -55,6 +59,10 @@ type ApiV1MeVerifyemailResendPost = {
   request: unknown
   response: MakeTuyauResponse<import('../app/users/controllers/verify_email_controller.ts').default['apiResend'], false>
 }
+type ApiV1MeGetHead = {
+  request: unknown
+  response: MakeTuyauResponse<import('../app/users/controllers/me_controller.ts').default['executeApi'], false>
+}
 export interface ApiDefinition {
   'auth': {
     'register': {
@@ -78,6 +86,10 @@ export interface ApiDefinition {
     };
   };
   'me': {
+    '$url': {
+    };
+    '$get': MeGetHead;
+    '$head': MeGetHead;
     'verify-email': {
       '$url': {
       };
@@ -123,6 +135,10 @@ export interface ApiDefinition {
             '$post': ApiV1MeVerifyemailResendPost;
           };
         };
+        '$url': {
+        };
+        '$get': ApiV1MeGetHead;
+        '$head': ApiV1MeGetHead;
       };
     };
   };
@@ -172,10 +188,10 @@ const routes = [
   },
   {
     params: [],
-    name: 'me.profile.render',
-    path: '/me/profile',
+    name: 'me.render',
+    path: '/me',
     method: ["GET","HEAD"],
-    types: {} as unknown,
+    types: {} as MeGetHead,
   },
   {
     params: [],
@@ -225,6 +241,13 @@ const routes = [
     path: '/api/v1/me/verify-email/resend',
     method: ["POST"],
     types: {} as ApiV1MeVerifyemailResendPost,
+  },
+  {
+    params: [],
+    name: 'me.executeApi',
+    path: '/api/v1/me',
+    method: ["GET","HEAD"],
+    types: {} as ApiV1MeGetHead,
   },
 ] as const;
 export const api = {

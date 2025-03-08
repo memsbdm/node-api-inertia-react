@@ -27,7 +27,7 @@ export default class LoginController {
     const user = await this.authService.attempt(email, password)
     await auth.use('web').login(user, !!isRememberMe)
 
-    return response.redirect().toPath(tuyau.$url('me.profile.render'))
+    return response.redirect().toPath(tuyau.$url('me.render'))
   }
 
   async apiExecute({ request, response }: HttpContext) {

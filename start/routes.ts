@@ -10,6 +10,7 @@
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import { throttle, verifyEmailLimiter } from './limiter.js'
+const MeController = () => import('#users/controllers/me_controller')
 const RegisterController = () => import('#auth/controllers/register_controller')
 const LoginController = () => import('#auth/controllers/login_controller')
 const LogoutController = () => import('#auth/controllers/logout_controller')
@@ -37,11 +38,7 @@ router
   .as('auth.logout.execute')
 
 // Users
-router
-  .on('/me/profile')
-  .renderInertia('me/profile')
-  .middleware(middleware.auth())
-  .as('me.profile.render')
+router.get('/me', [MeController, 'render']).middleware(middleware.auth()).as('me.render')
 
 router
   .get('/me/verify-email', [VerifyEmailController, 'render'])
@@ -86,6 +83,11 @@ router
       .as('me.verify-email.apiResend')
       .middleware(middleware.auth({ guards: ['api'] }))
       .use(verifyEmailLimiter)
+
+    router
+      .get('/me', [MeController, 'executeApi'])
+      .middleware(middleware.auth({ guards: ['api'] }))
+      .as('me.executeApi')
   })
   .prefix('api/v1')
   .use(throttle)
